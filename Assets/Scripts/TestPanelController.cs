@@ -248,7 +248,7 @@ public class TestPanelController : MonoBehaviour
     }
 
     /// <summary> 
-    ///  
+    /// 開始執行抽獎
     /// </summary> 
     public void CallBackForStartTheLottery()
     {
