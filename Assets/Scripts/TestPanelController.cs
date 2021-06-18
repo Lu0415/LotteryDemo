@@ -252,8 +252,6 @@ public class TestPanelController : MonoBehaviour
     /// </summary> 
     public void CallBackForStartTheLottery()
     {
-
-
         Debug.Log("點擊抽獎按鈕 IsOnClickPlaying = " + IsOnClickPlaying);
         if (!IsOnClickPlaying)
         {
