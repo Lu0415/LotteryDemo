@@ -19,15 +19,15 @@ public class LotaryInfoPanel : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (LotteryInfoController.SharedInstance.canUpdateInfo) {
-            LotteryInfoController.SharedInstance.canUpdateInfo = false;
-            for (int i = 0; i < lotaryInfoTran.childCount; i++)
-            {
-                lotaryInfoCellArr[i].SetItemCount(count: LotteryInfoController.SharedInstance.rewardInfoCountArr[i]);
-                Debug.Log("LotteryInfoController.SharedInstance.rewardInfoCountArr " + i + ": " + LotteryInfoController.SharedInstance.rewardInfoCountArr[i].ToString());
-            }
+        //if (LotteryInfoController.SharedInstance.canUpdateInfo) {
+        //    LotteryInfoController.SharedInstance.canUpdateInfo = false;
+        //    for (int i = 0; i < lotaryInfoTran.childCount; i++)
+        //    {
+        //        lotaryInfoCellArr[i].SetItemCount(count: LotteryInfoController.SharedInstance.rewardInfoCountArr[i]);
+        //        Debug.Log("LotteryInfoController.SharedInstance.rewardInfoCountArr " + i + ": " + LotteryInfoController.SharedInstance.rewardInfoCountArr[i].ToString());
+        //    }
             
-        }
+        //}
     }
 
     public void Init()
@@ -41,7 +41,7 @@ public class LotaryInfoPanel : MonoBehaviour
             // 資訊
             lotaryInfoArr[i] = lotaryInfoTran.GetChild(i);
             lotaryInfoCellArr[i] = lotaryInfoArr[i].GetComponent<LotteryInfoCell>();
-            lotaryInfoCellArr[i].SetItemTitle(title: LotteryInfoController.SharedInstance.rewardArr[i]);
+            //lotaryInfoCellArr[i].SetItemTitle(title: LotteryInfoController.SharedInstance.rewardArr[i]);
         }
 
         Debug.Log("lotaryInfoCellArr: " + lotaryInfoCellArr.Length);
