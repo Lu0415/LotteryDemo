@@ -85,9 +85,9 @@ GameObject:
   - component: {fileID: 4437524083646602767}
   - component: {fileID: 4437524083646602765}
   - component: {fileID: 4437524083646602766}
-  - component: {fileID: 2793578760733385669}
+  - component: {fileID: -6700086982759323610}
   m_Layer: 5
-  m_Name: Fruit
+  m_Name: RouletteItem
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -152,7 +152,7 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
---- !u!114 &2793578760733385669
+--- !u!114 &-6700086982759323610
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -161,7 +161,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 4437524083646602752}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ba5236ad52106e44bbeb0f0e567b3766, type: 3}
+  m_Script: {fileID: 11500000, guid: 536b026ea62ab47dea2c4b4f872d4d9f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   turnEff:
