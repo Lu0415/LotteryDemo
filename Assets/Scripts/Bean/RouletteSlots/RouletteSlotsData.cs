@@ -18,6 +18,9 @@ namespace Assets.Script.Model.Bean
         public string[] TempSampleChar;
     }
 
+    /// <summary>
+    /// 下注資訊
+    /// </summary>
     public class RouletteSlotsInfoData
     {
         public Vector3[] PointArray;
@@ -28,4 +31,17 @@ namespace Assets.Script.Model.Bean
 
         public string[] TempSampleChar;
     }
+
+    /// <summary>
+    /// 玩家資訊
+    /// </summary>
+    public class RouletteSlotsPlayerInfo
+    {
+        public string Name;
+
+        public float Coin;
+
+        public float Score;
+    }
+
 }

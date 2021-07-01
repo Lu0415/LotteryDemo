@@ -4,7 +4,7 @@ using UnityEngine;
 using System.Linq;
 using System;
 using Assets.Script.Model.Bean;
-using UnityEngine.UI;
+
 
 public class RouletteSlotsPanel : MonoBehaviour
 {
@@ -12,7 +12,7 @@ public class RouletteSlotsPanel : MonoBehaviour
 
     public Transform panelTransform;
     public GameObject rouletteItem;
-    public Text ScoreText;
+    
     GameObject newRouletteItem;
 
     //Action<int, bool> m_onItemValueChanged;

@@ -10,6 +10,8 @@ public class RouletteSlotsController : MonoBehaviour
 {
     RouletteSlotsPanel _rouletteSlotsPanel;
     RouletteSlotsInfoPanel _rouletteSlotsInfoPanel;
+    RouletteSlotsPlayerPanel _playerInfoPanel;
+    RouletteSlotsPlayerInfo _playerInfo;
 
     public Button _rouletteSlotsButton;
 
@@ -26,6 +28,7 @@ public class RouletteSlotsController : MonoBehaviour
 
     private List<string> _selectedRewardList;
     private bool _canUseRouletteButton;
+
     private float _playerCoin; //錢
     private float _playerScore; //積分
 
@@ -72,6 +75,26 @@ public class RouletteSlotsController : MonoBehaviour
             // test
             CalculationAddInfoItem(sampleChar);
         }
+
+        if (GameObject.Find("/Canvas/PlayerInfoPanel").TryGetComponent<RouletteSlotsPlayerPanel>(out RouletteSlotsPlayerPanel rouletteSlotsPlayerPanel))
+        {
+            _playerInfoPanel = rouletteSlotsPlayerPanel;
+        }
+
+        SetPlayerInfo();
+    }
+
+    /// <summary>
+    /// 使用者資訊
+    /// </summary>
+    void SetPlayerInfo()
+    {
+        _playerInfo = new RouletteSlotsPlayerInfo();
+        _playerInfo.Name = "Test User";
+        _playerInfo.Coin = _playerCoin;
+        _playerInfo.Score = _playerScore;
+
+        gameObject.BroadcastMessage("ResetPlayerInfo", _playerInfo, SendMessageOptions.RequireReceiver);
     }
 
     // Start is called before the first frame update
@@ -353,7 +376,7 @@ public class RouletteSlotsController : MonoBehaviour
     }
 
     /// <summary>
-    /// 
+    /// 壓注後回傳
     /// </summary>
     /// <param name="index"></param>
     /// <param name="isSelected"></param>
