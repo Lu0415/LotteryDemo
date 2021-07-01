@@ -4,11 +4,14 @@ using System.Collections.Generic;
 using System.Linq;
 using Assets.Script.Model.Bean;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class RouletteSlotsController : MonoBehaviour
 {
     RouletteSlotsPanel _rouletteSlotsPanel;
     RouletteSlotsInfoPanel _rouletteSlotsInfoPanel;
+
+    public Button _rouletteSlotsButton;
 
     private int totalItemCount = 28;
     public string[] sampleChar;
@@ -21,9 +24,21 @@ public class RouletteSlotsController : MonoBehaviour
     private float _rouletteSlotsInfoPanelW;
     private float _rouletteSlotsInfoPanelH;
 
+    private List<string> _selectedRewardList;
+    private bool _canUseRouletteButton;
+    private float _playerCoin; //錢
+    private float _playerScore; //積分
+
     private void Awake()
     {
+        _playerCoin = 500;
+        _playerScore = 0;
 
+        _selectedRewardList = new List<string>();
+        CheckRouletteButtonStatus();
+
+        //開始按鈕可使用狀態
+        _rouletteSlotsButton.interactable = false;
 
         sampleChar = new string[10] { "A", "B", "C", "D", "E", "F", "G", "H", "I", "J" };
         sampleData = new string[totalItemCount];
@@ -33,7 +48,8 @@ public class RouletteSlotsController : MonoBehaviour
         if (GameObject.Find("/Canvas/RouletteSlotsPanel").TryGetComponent<RouletteSlotsPanel>(out RouletteSlotsPanel rouletteSlotsPanel))
         {
             _rouletteSlotsPanel = rouletteSlotsPanel;
-            
+            _rouletteSlotsPanel.InitAction(RouletteSlotsAnimationComplete);
+
             //取得轉盤的大小
             var groupRT = _rouletteSlotsPanel.transform.GetComponent<RectTransform>();
             _rouletteSlotsPanelW = groupRT.sizeDelta.x;
@@ -45,6 +61,7 @@ public class RouletteSlotsController : MonoBehaviour
         if (GameObject.Find("/Canvas/RouletteSlotsInfoPanel").TryGetComponent<RouletteSlotsInfoPanel>(out RouletteSlotsInfoPanel rouletteSlotsInfoPanel))
         {
             _rouletteSlotsInfoPanel = rouletteSlotsInfoPanel;
+            _rouletteSlotsInfoPanel.InitInfoAction(OnInfoValueChange);
 
             Debug.Log("_rouletteSlotsInfoPanel = " + _rouletteSlotsInfoPanel);
             //取得資訊欄位的大小
@@ -74,9 +91,27 @@ public class RouletteSlotsController : MonoBehaviour
     /// </summary>
     public void RouletteButtonPressed()
     {
-        gameObject.BroadcastMessage("StartTheRouletteSlots", true, SendMessageOptions.RequireReceiver);
+        if (_canUseRouletteButton)
+        {
+            gameObject.BroadcastMessage("StartTheRouletteSlots", true, SendMessageOptions.RequireReceiver);
+        }
     }
-     
+
+    /// <summary>
+    /// 檢查開始按鈕狀態
+    /// </summary>
+    private void CheckRouletteButtonStatus()
+    {
+        if (_selectedRewardList.Count == 0)
+        {
+            _canUseRouletteButton = false;
+        }
+        else
+        {
+            _canUseRouletteButton = true;
+        }
+    }
+
     /// <summary>
     /// 計算顯示資料
     /// </summary>
@@ -305,4 +340,61 @@ public class RouletteSlotsController : MonoBehaviour
 
         gameObject.BroadcastMessage("InitRouletteSlotsInfoItem", data, SendMessageOptions.RequireReceiver);
     }
+
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="index"></param>
+    /// <param name="score"></param>
+    void OnItemValueChange(int index, bool isSelected)
+    {
+
+        Debug.Log("index: " + index + ", isSelected: " + isSelected);
+    }
+
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="index"></param>
+    /// <param name="isSelected"></param>
+    void OnInfoValueChange(string reward, bool isSelected)
+    {
+        Debug.Log("reward: " + reward + ", isSelected: " + isSelected);
+
+        if (isSelected)
+        {
+            _selectedRewardList.Add(reward);
+        }
+        else
+        {
+            _selectedRewardList.Remove(reward);
+        }
+
+        if (_selectedRewardList.Count == 0)
+        {
+            _rouletteSlotsButton.interactable = false;
+        }
+        else
+        {
+            _rouletteSlotsButton.interactable = true;
+        }
+        
+
+        CheckRouletteButtonStatus();
+        gameObject.BroadcastMessage("SetSelectedReward", _selectedRewardList, SendMessageOptions.RequireReceiver);
+    }
+
+    /// <summary>
+    /// 旋轉動畫結束
+    /// </summary>
+    /// <param name="complete"></param>
+    void RouletteSlotsAnimationComplete(bool complete)
+    {
+        if (complete)
+        {
+            //還原壓注按鈕
+            gameObject.BroadcastMessage("ResetRouletteSlotsInfoItem", true, SendMessageOptions.RequireReceiver);
+        }
+    }
+
 }

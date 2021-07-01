@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using Assets.Script.Model.Bean;
 using UnityEngine;
@@ -15,6 +16,8 @@ public class RouletteSlotsInfoPanel : MonoBehaviour
     private Transform[] _infoItemTransArray;
     private RouletteSlotsInfoItem[] _infoItemArray;
 
+    Action<string, bool> m_onInfoValueChanged;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -25,6 +28,12 @@ public class RouletteSlotsInfoPanel : MonoBehaviour
     void Update()
     {
         
+    }
+
+    public void InitInfoAction(Action<string, bool> infoValueChanged)
+    {
+        m_onInfoValueChanged = infoValueChanged;
+
     }
 
     /// <summary>
@@ -61,7 +70,7 @@ public class RouletteSlotsInfoPanel : MonoBehaviour
             // 項目
             _infoItemTransArray[i] = transform.GetChild(i);
             _infoItemArray[i] = _infoItemTransArray[i].GetComponent<RouletteSlotsInfoItem>();
-            _infoItemArray[i].FetchData(_tempSampleChar[i]); //.SetTitle(title: _tempSampleChar[i] + ", " + i.ToString());
+            _infoItemArray[i].FetchData(_tempSampleChar[i], OnInfoValueChanged); //.SetTitle(title: _tempSampleChar[i] + ", " + i.ToString());
 
             i += 1;
         }
@@ -80,5 +89,18 @@ public class RouletteSlotsInfoPanel : MonoBehaviour
             i += 1;
         }
 
+    }
+
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="item"></param>
+    void OnInfoValueChanged(RouletteSlotsInfoItem item)
+    {
+        Debug.Log("OnValueChanged(RouletteSlotsInfoItem item)");
+        Debug.Log("item.isSelected = " + item.isSelected);
+        Debug.Log("item.name = " + item.name);
+
+        m_onInfoValueChanged.Invoke(item.name, item.isSelected);
     }
 }

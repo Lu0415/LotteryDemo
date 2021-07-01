@@ -4,6 +4,7 @@ using UnityEngine;
 using System.Linq;
 using System;
 using Assets.Script.Model.Bean;
+using UnityEngine.UI;
 
 public class RouletteSlotsPanel : MonoBehaviour
 {
@@ -11,7 +12,12 @@ public class RouletteSlotsPanel : MonoBehaviour
 
     public Transform panelTransform;
     public GameObject rouletteItem;
+    public Text ScoreText;
     GameObject newRouletteItem;
+
+    //Action<int, bool> m_onItemValueChanged;
+    Action<bool> m_rouletteSlotsAnimationComplete;
+    List<string> m_selectedRewardList;
 
     //單次開始抽獎結束抽獎的事件
     private Action<bool> PlayingAction;
@@ -86,6 +92,8 @@ public class RouletteSlotsPanel : MonoBehaviour
 
     private void Awake()
     {
+        m_selectedRewardList = new List<string>();
+
         if (GameObject.Find("/Canvas/RouletteSlotsInfoPanel").TryGetComponent<RouletteSlotsInfoPanel>(out RouletteSlotsInfoPanel rouletteSlotsInfoPanel))
         {
             _rouletteSlotsInfoPanel = rouletteSlotsInfoPanel;
@@ -97,6 +105,11 @@ public class RouletteSlotsPanel : MonoBehaviour
     {
         //Debug.Log(string.Format("panelW:{0},panelH{1}", panelW, panelH));
 
+    }
+
+    public void InitAction(Action<bool> animationComplete)
+    {
+        m_rouletteSlotsAnimationComplete = animationComplete;
     }
 
     /// <summary>
@@ -242,8 +255,19 @@ public class RouletteSlotsPanel : MonoBehaviour
 
             //展示中獎 index
             //LotteryInfoController.SharedInstance.setLotteryInfo(title: rewardTitleArr[index]);
-            Debug.Log("恭喜您中獎，中獎index是：" + index);
+            Debug.Log("光環停止的index是：" + index);
             _rouletteSlotsInfoPanel.SetRewardCount(_dataArray[index]);
+
+            foreach (var item in m_selectedRewardList)
+            {
+                if (item == _dataArray[index])
+                {
+                    //中獎了
+                }
+            }
+
+            //動畫結束
+            m_rouletteSlotsAnimationComplete.Invoke(true);
         }
     }
 
@@ -366,6 +390,15 @@ public class RouletteSlotsPanel : MonoBehaviour
             yield return new WaitForSeconds(rewardTime);
         } while (moveCount >= steps[2] && moveCount < steps[3] - 1);
 
+    }
+
+    /// <summary>
+    /// 選擇的獎勵
+    /// </summary>
+    /// <param name="selectedRewards"></param>
+    private void SetSelectedReward(List<string> selectedRewards)
+    {
+        m_selectedRewardList = selectedRewards;
     }
 
 }
