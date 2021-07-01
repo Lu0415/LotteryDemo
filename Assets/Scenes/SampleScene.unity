@@ -200,7 +200,7 @@ GameObject:
   - component: {fileID: 311767872}
   - component: {fileID: 311767871}
   m_Layer: 5
-  m_Name: RouletteSlotsInfoPanel
+  m_Name: RouletteSlotsBetPanel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -238,7 +238,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   panelTransform: {fileID: 311767870}
-  rouletteInfoItem: {fileID: 531191728530200080, guid: a0583b02c9692467c97ba3d89d9eb229,
+  rouletteBetItem: {fileID: 531191728530200080, guid: a0583b02c9692467c97ba3d89d9eb229,
     type: 3}
 --- !u!114 &311767872
 MonoBehaviour:

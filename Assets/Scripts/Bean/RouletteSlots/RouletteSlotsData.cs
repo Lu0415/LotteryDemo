@@ -21,7 +21,7 @@ namespace Assets.Script.Model.Bean
     /// <summary>
     /// 下注資訊
     /// </summary>
-    public class RouletteSlotsInfoData
+    public class RouletteSlotsBetData
     {
         public Vector3[] PointArray;
 

@@ -4,10 +4,10 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class RouletteSlotsInfoItem : MonoBehaviour
+public class RouletteSlotsBetItem : MonoBehaviour
 {
 
-    Action<RouletteSlotsInfoItem> m_onValueChanged;
+    Action<RouletteSlotsBetItem> m_onValueChanged;
 
     [SerializeField] GameObject m_selectedImage;
     
@@ -17,7 +17,7 @@ public class RouletteSlotsInfoItem : MonoBehaviour
 
     public Text CountText;
 
-    public Button InfoButton;
+    public Button BetButton;
 
     public bool isSelected;
 
@@ -28,7 +28,7 @@ public class RouletteSlotsInfoItem : MonoBehaviour
         
     }
 
-    public void FetchData(string title, Action<RouletteSlotsInfoItem> onValueChanged)
+    public void FetchData(string title, Action<RouletteSlotsBetItem> onValueChanged)
     {
         m_onValueChanged = onValueChanged;
         RewardText.text = title;
@@ -65,7 +65,7 @@ public class RouletteSlotsInfoItem : MonoBehaviour
     /// <summary>
     /// BroadcastMessage 還原壓注按鈕
     /// </summary>
-    private void ResetRouletteSlotsInfoItem()
+    private void ResetRouletteSlotsBetItem()
     {
         isSelected = false;
         m_selectedImage.SetActive(false);

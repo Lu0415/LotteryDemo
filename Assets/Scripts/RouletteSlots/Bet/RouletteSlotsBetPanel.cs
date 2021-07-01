@@ -4,19 +4,19 @@ using System.Collections.Generic;
 using Assets.Script.Model.Bean;
 using UnityEngine;
 
-public class RouletteSlotsInfoPanel : MonoBehaviour
+public class RouletteSlotsBetPanel : MonoBehaviour
 {
 
     public Transform panelTransform;
-    public GameObject rouletteInfoItem;
-    GameObject newRouletteInfoItem;
+    public GameObject rouletteBetItem;
+    GameObject newRouletteBetItem;
 
     private string[] _tempSampleChar;
 
-    private Transform[] _infoItemTransArray;
-    private RouletteSlotsInfoItem[] _infoItemArray;
+    private Transform[] _betItemTransArray;
+    private RouletteSlotsBetItem[] _betItemArray;
 
-    Action<string, bool> m_onInfoValueChanged;
+    Action<string, bool> m_onBetValueChanged;
 
     // Start is called before the first frame update
     void Start()
@@ -30,9 +30,9 @@ public class RouletteSlotsInfoPanel : MonoBehaviour
         
     }
 
-    public void InitInfoAction(Action<string, bool> infoValueChanged)
+    public void InitBetAction(Action<string, bool> betValueChanged)
     {
-        m_onInfoValueChanged = infoValueChanged;
+        m_onBetValueChanged = betValueChanged;
 
     }
 
@@ -40,25 +40,25 @@ public class RouletteSlotsInfoPanel : MonoBehaviour
     /// 計算好資訊的畫面及項目後回傳
     /// </summary>
     /// <param name="data"></param>
-    private void InitRouletteSlotsInfoItem(RouletteSlotsInfoData data)
+    private void InitRouletteSlotsBetItem(RouletteSlotsBetData data)
     {
         var pointArray = data.PointArray;
         var itemW = data.ItemW;
         var itemH = data.ItemH;
         _tempSampleChar = data.TempSampleChar;
 
-        _infoItemTransArray = new Transform[pointArray.Length];
-        _infoItemArray = new RouletteSlotsInfoItem[pointArray.Length];
+        _betItemTransArray = new Transform[pointArray.Length];
+        _betItemArray = new RouletteSlotsBetItem[pointArray.Length];
 
         var i = 0;
         foreach (var point in pointArray)
         {
-            newRouletteInfoItem = Instantiate(rouletteInfoItem);
-            newRouletteInfoItem.name = _tempSampleChar[i];
-            newRouletteInfoItem.transform.SetParent(panelTransform);
-            newRouletteInfoItem.SetActive(true);
+            newRouletteBetItem = Instantiate(rouletteBetItem);
+            newRouletteBetItem.name = _tempSampleChar[i];
+            newRouletteBetItem.transform.SetParent(panelTransform);
+            newRouletteBetItem.SetActive(true);
 
-            RectTransform rt = newRouletteInfoItem.GetComponent<RectTransform>();
+            RectTransform rt = newRouletteBetItem.GetComponent<RectTransform>();
 
             rt.anchorMin = new Vector2(0.5f, 0.5f); //錨點最小
             rt.anchorMax = new Vector2(0.5f, 0.5f); //錨點最大
@@ -68,9 +68,9 @@ public class RouletteSlotsInfoPanel : MonoBehaviour
             rt.localPosition = point;
 
             // 項目
-            _infoItemTransArray[i] = transform.GetChild(i);
-            _infoItemArray[i] = _infoItemTransArray[i].GetComponent<RouletteSlotsInfoItem>();
-            _infoItemArray[i].FetchData(_tempSampleChar[i], OnInfoValueChanged); //.SetTitle(title: _tempSampleChar[i] + ", " + i.ToString());
+            _betItemTransArray[i] = transform.GetChild(i);
+            _betItemArray[i] = _betItemTransArray[i].GetComponent<RouletteSlotsBetItem>();
+            _betItemArray[i].FetchData(_tempSampleChar[i], OnBetValueChanged); //.SetTitle(title: _tempSampleChar[i] + ", " + i.ToString());
 
             i += 1;
         }
@@ -79,11 +79,11 @@ public class RouletteSlotsInfoPanel : MonoBehaviour
     public void SetRewardCount(string reward)
     {
         var i = 0;
-        foreach (var item in _infoItemArray)
+        foreach (var item in _betItemArray)
         {
             if (item.RewardText.text == reward)
             {
-                _infoItemArray[i].SetRewardCountValue();
+                _betItemArray[i].SetRewardCountValue();
             }
 
             i += 1;
@@ -95,12 +95,12 @@ public class RouletteSlotsInfoPanel : MonoBehaviour
     /// 
     /// </summary>
     /// <param name="item"></param>
-    void OnInfoValueChanged(RouletteSlotsInfoItem item)
+    void OnBetValueChanged(RouletteSlotsBetItem item)
     {
-        Debug.Log("OnValueChanged(RouletteSlotsInfoItem item)");
+        Debug.Log("OnValueChanged(RouletteSlotsBetItem item)");
         Debug.Log("item.isSelected = " + item.isSelected);
         Debug.Log("item.name = " + item.name);
 
-        m_onInfoValueChanged.Invoke(item.name, item.isSelected);
+        m_onBetValueChanged.Invoke(item.name, item.isSelected);
     }
 }

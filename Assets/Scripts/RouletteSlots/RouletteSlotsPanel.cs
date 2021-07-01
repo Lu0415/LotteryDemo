@@ -8,7 +8,7 @@ using Assets.Script.Model.Bean;
 
 public class RouletteSlotsPanel : MonoBehaviour
 {
-    RouletteSlotsInfoPanel _rouletteSlotsInfoPanel;
+    RouletteSlotsBetPanel _rouletteSlotsBetPanel;
 
     public Transform panelTransform;
     public GameObject rouletteItem;
@@ -94,9 +94,9 @@ public class RouletteSlotsPanel : MonoBehaviour
     {
         m_selectedRewardList = new List<string>();
 
-        if (GameObject.Find("/Canvas/RouletteSlotsInfoPanel").TryGetComponent<RouletteSlotsInfoPanel>(out RouletteSlotsInfoPanel rouletteSlotsInfoPanel))
+        if (GameObject.Find("/Canvas/RouletteSlotsBetPanel").TryGetComponent<RouletteSlotsBetPanel>(out RouletteSlotsBetPanel rouletteSlotsBetPanel))
         {
-            _rouletteSlotsInfoPanel = rouletteSlotsInfoPanel;
+            _rouletteSlotsBetPanel = rouletteSlotsBetPanel;
         }
     }
 
@@ -254,9 +254,8 @@ public class RouletteSlotsPanel : MonoBehaviour
             }
 
             //展示中獎 index
-            //LotteryInfoController.SharedInstance.setLotteryInfo(title: rewardTitleArr[index]);
             Debug.Log("光環停止的index是：" + index);
-            _rouletteSlotsInfoPanel.SetRewardCount(_dataArray[index]);
+            _rouletteSlotsBetPanel.SetRewardCount(_dataArray[index]);
 
             foreach (var item in m_selectedRewardList)
             {

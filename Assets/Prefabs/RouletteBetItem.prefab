@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 8109009599384510548}
   - component: {fileID: 3221605393391309718}
   m_Layer: 5
-  m_Name: RouletteInfoItem
+  m_Name: RouletteBetItem
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -54,11 +54,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_selectedImage: {fileID: 3548142396243203907}
-  SelectedImage: {fileID: 1475114050991517964}
   ScoreText: {fileID: 7000558197788739919}
   RewardText: {fileID: 7086318374473878485}
   CountText: {fileID: 8272359333591003851}
-  InfoButton: {fileID: 7568002238206954697}
+  BetButton: {fileID: 7568002238206954697}
+  isSelected: 0
 --- !u!1 &562393198571343228
 GameObject:
   m_ObjectHideFlags: 0
@@ -71,7 +71,7 @@ GameObject:
   - component: {fileID: 4106581084716021703}
   - component: {fileID: 8272359333591003851}
   m_Layer: 5
-  m_Name: InfoCountText
+  m_Name: BetCountText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -152,7 +152,7 @@ GameObject:
   - component: {fileID: 1475114050991517964}
   - component: {fileID: 8873303252169320599}
   m_Layer: 5
-  m_Name: InfoSelectedMark
+  m_Name: BetSelectedMark
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -241,7 +241,7 @@ GameObject:
   - component: {fileID: 7554468222829538638}
   - component: {fileID: 7086318374473878485}
   m_Layer: 5
-  m_Name: InfoRewardText
+  m_Name: BetRewardText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -320,7 +320,7 @@ GameObject:
   - component: {fileID: 5508169849986175227}
   - component: {fileID: 7568002238206954697}
   m_Layer: 5
-  m_Name: InfoButton
+  m_Name: BetButton
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -448,7 +448,7 @@ GameObject:
   - component: {fileID: 4810118034005908926}
   - component: {fileID: 7000558197788739919}
   m_Layer: 5
-  m_Name: InfoScoreText
+  m_Name: BetScoreText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

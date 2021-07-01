@@ -9,7 +9,7 @@ using UnityEngine.UI;
 public class RouletteSlotsController : MonoBehaviour
 {
     RouletteSlotsPanel _rouletteSlotsPanel;
-    RouletteSlotsInfoPanel _rouletteSlotsInfoPanel;
+    RouletteSlotsBetPanel _rouletteSlotsBetPanel;
     RouletteSlotsPlayerPanel _playerInfoPanel;
     RouletteSlotsPlayerInfo _playerInfo;
 
@@ -23,8 +23,8 @@ public class RouletteSlotsController : MonoBehaviour
     private float _rouletteSlotsPanelW;
     private float _rouletteSlotsPanelH;
 
-    private float _rouletteSlotsInfoPanelW;
-    private float _rouletteSlotsInfoPanelH;
+    private float _rouletteSlotsBetPanelW;
+    private float _rouletteSlotsBetPanelH;
 
     private List<string> _selectedRewardList;
     private bool _canUseRouletteButton;
@@ -58,22 +58,22 @@ public class RouletteSlotsController : MonoBehaviour
             _rouletteSlotsPanelW = groupRT.sizeDelta.x;
             _rouletteSlotsPanelH = groupRT.sizeDelta.y;
 
-            InitLotteryInfoData();
+            InitLotteryBetData();
         }
 
-        if (GameObject.Find("/Canvas/RouletteSlotsInfoPanel").TryGetComponent<RouletteSlotsInfoPanel>(out RouletteSlotsInfoPanel rouletteSlotsInfoPanel))
+        if (GameObject.Find("/Canvas/RouletteSlotsBetPanel").TryGetComponent<RouletteSlotsBetPanel>(out RouletteSlotsBetPanel rouletteSlotsBetPanel))
         {
-            _rouletteSlotsInfoPanel = rouletteSlotsInfoPanel;
-            _rouletteSlotsInfoPanel.InitInfoAction(OnInfoValueChange);
+            _rouletteSlotsBetPanel = rouletteSlotsBetPanel;
+            _rouletteSlotsBetPanel.InitBetAction(OnBetValueChange);
 
-            Debug.Log("_rouletteSlotsInfoPanel = " + _rouletteSlotsInfoPanel);
+            Debug.Log("_rouletteSlotsBetPanel = " + _rouletteSlotsBetPanel);
             //取得資訊欄位的大小
-            var groupRT = _rouletteSlotsInfoPanel.transform.GetComponent<RectTransform>();
-            _rouletteSlotsInfoPanelW = groupRT.sizeDelta.x;
-            _rouletteSlotsInfoPanelH = groupRT.sizeDelta.y;
+            var groupRT = _rouletteSlotsBetPanel.transform.GetComponent<RectTransform>();
+            _rouletteSlotsBetPanelW = groupRT.sizeDelta.x;
+            _rouletteSlotsBetPanelH = groupRT.sizeDelta.y;
 
             // test
-            CalculationAddInfoItem(sampleChar);
+            CalculationAddBetItem(sampleChar);
         }
 
         if (GameObject.Find("/Canvas/PlayerInfoPanel").TryGetComponent<RouletteSlotsPlayerPanel>(out RouletteSlotsPlayerPanel rouletteSlotsPlayerPanel))
@@ -128,17 +128,19 @@ public class RouletteSlotsController : MonoBehaviour
         if (_selectedRewardList.Count == 0)
         {
             _canUseRouletteButton = false;
+            _rouletteSlotsButton.interactable = false;
         }
         else
         {
             _canUseRouletteButton = true;
+            _rouletteSlotsButton.interactable = true;
         }
     }
 
     /// <summary>
     /// 計算顯示資料
     /// </summary>
-    public void InitLotteryInfoData()
+    public void InitLotteryBetData()
     {
         
         List<string> list = new List<string>();
@@ -335,33 +337,33 @@ public class RouletteSlotsController : MonoBehaviour
     /// <summary>
     /// 
     /// </summary>
-    private void CalculationAddInfoItem(string[] sampleArray)
+    private void CalculationAddBetItem(string[] sampleArray)
     {
         var widthCount = sampleArray.Length;
-        Debug.Log("CalculationAddInfoItem sampleArray.Length = " + sampleArray.Length);
-        Debug.Log("CalculationAddInfoItem widthCount = " + widthCount);
+        Debug.Log("CalculationAddBetItem sampleArray.Length = " + sampleArray.Length);
+        Debug.Log("CalculationAddBetItem widthCount = " + widthCount);
         //子項目真實寬高 (無條件捨去) 避免一起時超過範圍
-        var realWidth = Mathf.Floor(_rouletteSlotsInfoPanelW / widthCount);
-        var realHeight = _rouletteSlotsInfoPanelH;
+        var realWidth = Mathf.Floor(_rouletteSlotsBetPanelW / widthCount);
+        var realHeight = _rouletteSlotsBetPanelH;
 
-        var leftAndRightMargin = (_rouletteSlotsInfoPanelW - (widthCount * realWidth)) / 2;
+        var leftAndRightMargin = (_rouletteSlotsBetPanelW - (widthCount * realWidth)) / 2;
 
         //算出每一個座標點
         Vector3[] points = new Vector3[widthCount];
-        var rangeLeft = 0 - (_rouletteSlotsInfoPanelW / 2) + leftAndRightMargin;
+        var rangeLeft = 0 - (_rouletteSlotsBetPanelW / 2) + leftAndRightMargin;
         for (int i = 0; i < widthCount; i++)
         {
             points[i] = new Vector3(rangeLeft + (realWidth * (i + 0.5f)), 0, 0);
-            Debug.Log(string.Format("CalculationAddInfoItem => horizontalPointArray[{0}] :{1}", i, points[i]));
+            Debug.Log(string.Format("CalculationAddBetItem => horizontalPointArray[{0}] :{1}", i, points[i]));
         }
 
-        RouletteSlotsInfoData data = new RouletteSlotsInfoData();
+        RouletteSlotsBetData data = new RouletteSlotsBetData();
         data.PointArray = points;
         data.ItemW = realWidth;
         data.ItemH = realHeight;
         data.TempSampleChar = sampleChar;
 
-        gameObject.BroadcastMessage("InitRouletteSlotsInfoItem", data, SendMessageOptions.RequireReceiver);
+        gameObject.BroadcastMessage("InitRouletteSlotsBetItem", data, SendMessageOptions.RequireReceiver);
     }
 
     /// <summary>
@@ -380,7 +382,7 @@ public class RouletteSlotsController : MonoBehaviour
     /// </summary>
     /// <param name="index"></param>
     /// <param name="isSelected"></param>
-    void OnInfoValueChange(string reward, bool isSelected)
+    void OnBetValueChange(string reward, bool isSelected)
     {
         Debug.Log("reward: " + reward + ", isSelected: " + isSelected);
 
@@ -392,16 +394,6 @@ public class RouletteSlotsController : MonoBehaviour
         {
             _selectedRewardList.Remove(reward);
         }
-
-        if (_selectedRewardList.Count == 0)
-        {
-            _rouletteSlotsButton.interactable = false;
-        }
-        else
-        {
-            _rouletteSlotsButton.interactable = true;
-        }
-        
 
         CheckRouletteButtonStatus();
         gameObject.BroadcastMessage("SetSelectedReward", _selectedRewardList, SendMessageOptions.RequireReceiver);
@@ -416,7 +408,9 @@ public class RouletteSlotsController : MonoBehaviour
         if (complete)
         {
             //還原壓注按鈕
-            gameObject.BroadcastMessage("ResetRouletteSlotsInfoItem", true, SendMessageOptions.RequireReceiver);
+            gameObject.BroadcastMessage("ResetRouletteSlotsBetItem", true, SendMessageOptions.RequireReceiver);
+            _selectedRewardList.Clear();
+            CheckRouletteButtonStatus();
         }
     }
 
