@@ -271,7 +271,7 @@ public class RouletteSlotsPanel : MonoBehaviour
             
             _rouletteSlotsBetPanel.SetRewardCount(_dataArray[index]);
             //動畫結束
-            m_rouletteSlotsAnimationComplete.Invoke(isWinning, _tempSampleChar[index]);
+            m_rouletteSlotsAnimationComplete.Invoke(isWinning, _dataArray[index]);
         }
     }
 
