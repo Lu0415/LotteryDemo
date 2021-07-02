@@ -58,9 +58,9 @@ namespace Assets.Script.Model.Bean
 
         public float Score;
     }
-
+    
     /// <summary>
-    /// 
+    /// 尋找SampleCharData
     /// </summary>
     public class SampleCharDataSearch
     {

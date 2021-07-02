@@ -87,15 +87,7 @@ public class RouletteSlotsController : MonoBehaviour
         {
             _playerInfoPanel = rouletteSlotsPlayerPanel;
         }
-
-        if (GameObject.Find("/Canvas/RouletteSlotsInfoPanel").TryGetComponent<RouletteSlotsInfoPanel>(out RouletteSlotsInfoPanel rouletteSlotsInfoPanel))
-        {
-            _rouletteSlotsInfoPanel = rouletteSlotsInfoPanel;
-            _rouletteSlotsInfoPanel.InitAction(_playerScore);
-
-
-        }
-
+        
         SetPlayerInfo();
     }
 
@@ -167,7 +159,7 @@ public class RouletteSlotsController : MonoBehaviour
             openWith.Add(item.reward, 0);
         }
 
-        Debug.Log(string.Format("計算顯示資料 averageNum = {0}", averageNum));
+        //Debug.Log(string.Format("計算顯示資料 averageNum = {0}", averageNum));
 
         for (int i = 0; i < _totalItemCount; i++)
         {
@@ -177,25 +169,25 @@ public class RouletteSlotsController : MonoBehaviour
             
             var count = openWith[charStr];
 
-            Debug.Log(string.Format("計算顯示資料 random = {0}, charStr = {1}, count = {2}", random, charStr, count));
+            //Debug.Log(string.Format("計算顯示資料 random = {0}, charStr = {1}, count = {2}", random, charStr, count));
             
 
             if (count < averageNum)
             {
                 //低於平均數
-                Debug.Log("計算顯示資料 低於平均數");
+                //Debug.Log("計算顯示資料 低於平均數");
                 //Debug.Log(string.Format("計算顯示資料 sampleChar[random] = {0}", sampleChar[random].reward));
                 //list.Add(sampleChar[random]);
             }
             else
             {
                 var averageCount = openWith.Values.Sum();
-                Debug.Log(string.Format("計算顯示資料 averageCount = {0}", averageCount));
+                //Debug.Log(string.Format("計算顯示資料 averageCount = {0}", averageCount));
                 //
                 if (averageCount >= sampleChar.Count * averageNum && count < (averageNum + 1))
                 {
                     //加總大於平均數*項目列表數量 且 項目數量<平均數+1
-                    Debug.Log("計算顯示資料 加總大於平均數*項目列表數量 且 項目數量<平均數+1");
+                    //Debug.Log("計算顯示資料 加總大於平均數*項目列表數量 且 項目數量<平均數+1");
                     //Debug.Log(string.Format("計算顯示資料 sampleChar[random] = {0}", sampleChar[random].reward));
                     //list.Add(sampleChar[random]);
                 }
@@ -212,7 +204,7 @@ public class RouletteSlotsController : MonoBehaviour
                     if (filteredList.Count > 0)
                     {
                         //取得小於平均數列表集 重新亂數
-                        Debug.Log("計算顯示資料 取得小於平均數列表集 重新亂數");
+                        //Debug.Log("計算顯示資料 取得小於平均數列表集 重新亂數");
                         random = UnityEngine.Random.Range(0, filteredList.Count - 1);
                         charStr = filteredList[random].Key;
                         count = filteredList[random].Value;
@@ -220,14 +212,14 @@ public class RouletteSlotsController : MonoBehaviour
                     else
                     {
                         //取得小於平均數列表集+1 重新亂數
-                        Debug.Log("計算顯示資料 取得小於平均數列表集+1 重新亂數");
+                        //Debug.Log("計算顯示資料 取得小於平均數列表集+1 重新亂數");
                         filteredList = openWith.Where(x => x.Value < averageNum + 1).ToList();
                         random = UnityEngine.Random.Range(0, filteredList.Count - 1);
                         charStr = filteredList[random].Key;
                         count = filteredList[random].Value;
                     }
 
-                    Debug.Log("計算顯示資料 第二次random random" + random + ", charStr = " + charStr);
+                    //Debug.Log("計算顯示資料 第二次random random" + random + ", charStr = " + charStr);
                     //Debug.Log(string.Format("計算顯示資料 sampleChar[random] = {0}", sampleChar[random].reward));
                     //list.Add(sampleChar[random]);
                 }
@@ -245,9 +237,9 @@ public class RouletteSlotsController : MonoBehaviour
         {
             www += String.Format("item.Key = {0}, item.Value = {1} \n", item.Key, item.Value);
         }
-        Debug.Log("計算顯示資料 最後的 www = \n" + www);
+        //Debug.Log("計算顯示資料 最後的 www = \n" + www);
 
-        Debug.Log("計算顯示資料 最後的 list.Count = " + list.Count);
+        //Debug.Log("計算顯示資料 最後的 list.Count = " + list.Count);
         sampleData = list;
 
         //test
@@ -257,7 +249,7 @@ public class RouletteSlotsController : MonoBehaviour
             sss += item.reward;
 
         }
-        Debug.Log("計算顯示資料 最後的sampleData = " + sss);
+        //Debug.Log("計算顯示資料 最後的sampleData = " + sss);
 
         // 計算可以置放多少格子
         CalculationAddGrid(_totalItemCount + 4);
@@ -362,7 +354,20 @@ public class RouletteSlotsController : MonoBehaviour
         data.TempSampleChar = sampleChar;
 
         gameObject.BroadcastMessage("InitRouletteSlotsItem", data, SendMessageOptions.RequireReceiver);
+
+        var infoPanelW = _rouletteSlotsPanelW - (realWidth * 2);
+        var infoPanelH = _rouletteSlotsPanelH - (realHeight * 2);
+        FindRouletteSlotsInfoPanelGameObject(infoPanelW, infoPanelH);
         
+    }
+
+    private void FindRouletteSlotsInfoPanelGameObject(float width, float height)
+    {
+        if (GameObject.Find("/Canvas/RouletteSlotsInfoPanel").TryGetComponent<RouletteSlotsInfoPanel>(out RouletteSlotsInfoPanel rouletteSlotsInfoPanel))
+        {
+            _rouletteSlotsInfoPanel = rouletteSlotsInfoPanel;
+            _rouletteSlotsInfoPanel.InitAction(_playerScore, width, height);
+        }
     }
 
     /// <summary>
