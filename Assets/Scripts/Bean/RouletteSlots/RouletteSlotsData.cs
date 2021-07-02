@@ -2,6 +2,19 @@
 
 namespace Assets.Script.Model.Bean
 {
+
+    public class SampleData
+    {
+        public string reward;
+        public float score;
+
+        public SampleData(string reward, float score)
+        {
+            this.reward = reward;
+            this.score = score;
+        }
+    }
+
     /// <summary>
     /// 
     /// </summary>

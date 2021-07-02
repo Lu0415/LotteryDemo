@@ -11,11 +11,13 @@ public class RouletteSlotsController : MonoBehaviour
     RouletteSlotsPanel _rouletteSlotsPanel;
     RouletteSlotsBetPanel _rouletteSlotsBetPanel;
     RouletteSlotsPlayerPanel _playerInfoPanel;
+    RouletteSlotsInfoPanel _rouletteSlotsInfoPanel;
     RouletteSlotsPlayerInfo _playerInfo;
 
     public Button _rouletteSlotsButton;
 
     private int totalItemCount = 28;
+    //public List<SampleData> sampleChar;
     public string[] sampleChar;
     private string[] sampleData;
     private int averageNum;
@@ -44,6 +46,11 @@ public class RouletteSlotsController : MonoBehaviour
         _rouletteSlotsButton.interactable = false;
 
         sampleChar = new string[10] { "A", "B", "C", "D", "E", "F", "G", "H", "I", "J" };
+        //sampleChar = new List<SampleData>
+        //{
+        //    new SampleData("A", 10),new SampleData("B", 20),new SampleData("C", 30),new SampleData("D", 40),new SampleData("E", 50),
+        //    new SampleData("F", 10),new SampleData("G", 20),new SampleData("H", 30),new SampleData("I", 40),new SampleData("J", 50)
+        //};
         sampleData = new string[totalItemCount];
 
         averageNum = Mathf.FloorToInt((float)sampleData.Length / sampleChar.Length);
@@ -79,6 +86,11 @@ public class RouletteSlotsController : MonoBehaviour
         if (GameObject.Find("/Canvas/PlayerInfoPanel").TryGetComponent<RouletteSlotsPlayerPanel>(out RouletteSlotsPlayerPanel rouletteSlotsPlayerPanel))
         {
             _playerInfoPanel = rouletteSlotsPlayerPanel;
+        }
+
+        if (GameObject.Find("/Canvas/RouletteSlotsInfoPanel").TryGetComponent<RouletteSlotsInfoPanel>(out RouletteSlotsInfoPanel rouletteSlotsInfoPanel))
+        {
+            _rouletteSlotsInfoPanel = rouletteSlotsInfoPanel;
         }
 
         SetPlayerInfo();
@@ -367,17 +379,6 @@ public class RouletteSlotsController : MonoBehaviour
     }
 
     /// <summary>
-    /// 
-    /// </summary>
-    /// <param name="index"></param>
-    /// <param name="score"></param>
-    void OnItemValueChange(int index, bool isSelected)
-    {
-
-        Debug.Log("index: " + index + ", isSelected: " + isSelected);
-    }
-
-    /// <summary>
     /// 壓注後回傳
     /// </summary>
     /// <param name="index"></param>
@@ -403,15 +404,25 @@ public class RouletteSlotsController : MonoBehaviour
     /// 旋轉動畫結束
     /// </summary>
     /// <param name="complete"></param>
-    void RouletteSlotsAnimationComplete(bool complete)
+    void RouletteSlotsAnimationComplete(bool isWinning, string rewardItem)
     {
-        if (complete)
+        if (isWinning)
         {
-            //還原壓注按鈕
-            gameObject.BroadcastMessage("ResetRouletteSlotsBetItem", true, SendMessageOptions.RequireReceiver);
-            _selectedRewardList.Clear();
-            CheckRouletteButtonStatus();
+
         }
+        else
+        {
+
+        }
+
+        //
+        gameObject.BroadcastMessage("SetScoreValue", true, SendMessageOptions.RequireReceiver);
+
+        //還原壓注按鈕
+        gameObject.BroadcastMessage("ResetRouletteSlotsBetItem", true, SendMessageOptions.RequireReceiver);
+        _selectedRewardList.Clear();
+        CheckRouletteButtonStatus();
+
     }
 
 }

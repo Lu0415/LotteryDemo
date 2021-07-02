@@ -16,7 +16,7 @@ public class RouletteSlotsPanel : MonoBehaviour
     GameObject newRouletteItem;
 
     //Action<int, bool> m_onItemValueChanged;
-    Action<bool> m_rouletteSlotsAnimationComplete;
+    Action<bool, string> m_rouletteSlotsAnimationComplete;
     List<string> m_selectedRewardList;
 
     //單次開始抽獎結束抽獎的事件
@@ -107,7 +107,7 @@ public class RouletteSlotsPanel : MonoBehaviour
 
     }
 
-    public void InitAction(Action<bool> animationComplete)
+    public void InitAction(Action<bool, string> animationComplete)
     {
         m_rouletteSlotsAnimationComplete = animationComplete;
     }
@@ -257,16 +257,18 @@ public class RouletteSlotsPanel : MonoBehaviour
             Debug.Log("光環停止的index是：" + index);
             _rouletteSlotsBetPanel.SetRewardCount(_dataArray[index]);
 
+            var isWinning = false;
             foreach (var item in m_selectedRewardList)
             {
                 if (item == _dataArray[index])
                 {
                     //中獎了
+                    isWinning = true;
                 }
             }
 
             //動畫結束
-            m_rouletteSlotsAnimationComplete.Invoke(true);
+            m_rouletteSlotsAnimationComplete.Invoke(isWinning, _dataArray[index]);
         }
     }
 
