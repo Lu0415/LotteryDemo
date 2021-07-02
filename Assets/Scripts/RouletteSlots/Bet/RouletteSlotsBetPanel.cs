@@ -11,12 +11,12 @@ public class RouletteSlotsBetPanel : MonoBehaviour
     public GameObject rouletteBetItem;
     GameObject newRouletteBetItem;
 
-    private string[] _tempSampleChar;
+    private List<SampleCharData> _tempSampleChar;
 
     private Transform[] _betItemTransArray;
     private RouletteSlotsBetItem[] _betItemArray;
 
-    Action<string, bool> m_onBetValueChanged;
+    Action<SampleCharData, bool> m_onBetValueChanged;
 
     // Start is called before the first frame update
     void Start()
@@ -30,7 +30,7 @@ public class RouletteSlotsBetPanel : MonoBehaviour
         
     }
 
-    public void InitBetAction(Action<string, bool> betValueChanged)
+    public void InitBetAction(Action<SampleCharData, bool> betValueChanged)
     {
         m_onBetValueChanged = betValueChanged;
 
@@ -54,7 +54,7 @@ public class RouletteSlotsBetPanel : MonoBehaviour
         foreach (var point in pointArray)
         {
             newRouletteBetItem = Instantiate(rouletteBetItem);
-            newRouletteBetItem.name = _tempSampleChar[i];
+            newRouletteBetItem.name = _tempSampleChar[i].reward;
             newRouletteBetItem.transform.SetParent(panelTransform);
             newRouletteBetItem.SetActive(true);
 
@@ -76,12 +76,12 @@ public class RouletteSlotsBetPanel : MonoBehaviour
         }
     }
 
-    public void SetRewardCount(string reward)
+    public void SetRewardCount(SampleCharData data)
     {
         var i = 0;
         foreach (var item in _betItemArray)
         {
-            if (item.RewardText.text == reward)
+            if (item.RewardText.text == data.reward)
             {
                 _betItemArray[i].SetRewardCountValue();
             }
@@ -94,13 +94,19 @@ public class RouletteSlotsBetPanel : MonoBehaviour
     /// <summary>
     /// 
     /// </summary>
-    /// <param name="item"></param>
-    void OnBetValueChanged(RouletteSlotsBetItem item)
+    /// <param name="betItem"></param>
+    void OnBetValueChanged(RouletteSlotsBetItem betItem)
     {
         Debug.Log("OnValueChanged(RouletteSlotsBetItem item)");
-        Debug.Log("item.isSelected = " + item.isSelected);
-        Debug.Log("item.name = " + item.name);
+        Debug.Log("item.isSelected = " + betItem.isSelected);
+        Debug.Log("item.name = " + betItem.name);
 
-        m_onBetValueChanged.Invoke(item.name, item.isSelected);
+        foreach (var item in _tempSampleChar)
+        {
+            if (item.reward == betItem.name)
+            {
+                m_onBetValueChanged.Invoke(item, betItem.isSelected);
+            }
+        }
     }
 }

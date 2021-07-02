@@ -16,8 +16,8 @@ public class RouletteSlotsPanel : MonoBehaviour
     GameObject newRouletteItem;
 
     //Action<int, bool> m_onItemValueChanged;
-    Action<bool, string> m_rouletteSlotsAnimationComplete;
-    List<string> m_selectedRewardList;
+    Action<bool, SampleCharData> m_rouletteSlotsAnimationComplete;
+    List<SampleCharData> m_selectedRewardList;
 
     //單次開始抽獎結束抽獎的事件
     private Action<bool> PlayingAction;
@@ -52,8 +52,8 @@ public class RouletteSlotsPanel : MonoBehaviour
     // 中獎特效
     private Transform eff_SelectFrame;
 
-    private string[] _tempSampleChar;
-    private string[] _dataArray;
+    private List<SampleCharData> _tempSampleChar;
+    private List<SampleCharData> _dataArray;
 
     // 點了抽獎按鈕正在抽獎
     private bool isOnClickPlaying;
@@ -92,7 +92,7 @@ public class RouletteSlotsPanel : MonoBehaviour
 
     private void Awake()
     {
-        m_selectedRewardList = new List<string>();
+        m_selectedRewardList = new List<SampleCharData>();
 
         if (GameObject.Find("/Canvas/RouletteSlotsBetPanel").TryGetComponent<RouletteSlotsBetPanel>(out RouletteSlotsBetPanel rouletteSlotsBetPanel))
         {
@@ -107,7 +107,7 @@ public class RouletteSlotsPanel : MonoBehaviour
 
     }
 
-    public void InitAction(Action<bool, string> animationComplete)
+    public void InitAction(Action<bool, SampleCharData> animationComplete)
     {
         m_rouletteSlotsAnimationComplete = animationComplete;
     }
@@ -118,7 +118,7 @@ public class RouletteSlotsPanel : MonoBehaviour
     /// <param name="data"></param>
     private void InitRouletteSlotsItem(RouletteSlotsData data)
     {
-
+        
         _dataArray = data.SampleData;
         var pointArray = data.PointArray;
         var itemW = data.ItemW;
@@ -133,7 +133,7 @@ public class RouletteSlotsPanel : MonoBehaviour
         {
 
             newRouletteItem = Instantiate(rouletteItem);
-            newRouletteItem.name = _dataArray[index];
+            newRouletteItem.name = _dataArray[index].reward;
             newRouletteItem.transform.SetParent(panelTransform);
             newRouletteItem.SetActive(true);
 
@@ -149,7 +149,7 @@ public class RouletteSlotsPanel : MonoBehaviour
             // 項目
             rewardTransArr[index] = transform.GetChild(index);
             rewardCellArr[index] = rewardTransArr[index].GetComponent<RouletteSlotsItem>();
-            rewardCellArr[index].SetTitle(title: _dataArray[index] + ", " + index.ToString());
+            rewardCellArr[index].SetTitle(title: _dataArray[index].reward + ", " + index.ToString());
 
             index += 1;
         }
@@ -255,7 +255,8 @@ public class RouletteSlotsPanel : MonoBehaviour
 
             //展示中獎 index
             Debug.Log("光環停止的index是：" + index);
-            _rouletteSlotsBetPanel.SetRewardCount(_dataArray[index]);
+            Debug.Log("_dataArray[index] = " + _dataArray[index]);
+            
 
             var isWinning = false;
             foreach (var item in m_selectedRewardList)
@@ -267,8 +268,10 @@ public class RouletteSlotsPanel : MonoBehaviour
                 }
             }
 
+            
+            _rouletteSlotsBetPanel.SetRewardCount(_dataArray[index]);
             //動畫結束
-            m_rouletteSlotsAnimationComplete.Invoke(isWinning, _dataArray[index]);
+            m_rouletteSlotsAnimationComplete.Invoke(isWinning, _tempSampleChar[index]);
         }
     }
 
@@ -280,7 +283,7 @@ public class RouletteSlotsPanel : MonoBehaviour
         Debug.Log("點擊抽獎按鈕 IsOnClickPlaying = " + IsOnClickPlaying);
         if (!IsOnClickPlaying)
         {
-            var reward = _tempSampleChar[UnityEngine.Random.Range(0, _tempSampleChar.Length - 1)];
+            var reward = _tempSampleChar[UnityEngine.Random.Range(0, _tempSampleChar.Count - 1)].reward;
             Debug.Log("點擊抽獎按鈕 reward：" + reward);
             var rewardIndexList = rewardCellArr.Select((elem, index) => new { elem, index }).Where(x => x.elem.titleText[0].text.Contains(reward)).Select((elem, index) => elem.index).ToList();
 
@@ -397,7 +400,7 @@ public class RouletteSlotsPanel : MonoBehaviour
     /// 選擇的獎勵
     /// </summary>
     /// <param name="selectedRewards"></param>
-    private void SetSelectedReward(List<string> selectedRewards)
+    private void SetSelectedReward(List<SampleCharData> selectedRewards)
     {
         m_selectedRewardList = selectedRewards;
     }

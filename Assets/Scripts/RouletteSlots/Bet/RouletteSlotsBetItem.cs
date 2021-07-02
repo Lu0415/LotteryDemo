@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using Assets.Script.Model.Bean;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -28,10 +29,11 @@ public class RouletteSlotsBetItem : MonoBehaviour
         
     }
 
-    public void FetchData(string title, Action<RouletteSlotsBetItem> onValueChanged)
+    public void FetchData(SampleCharData data, Action<RouletteSlotsBetItem> onValueChanged)
     {
         m_onValueChanged = onValueChanged;
-        RewardText.text = title;
+        RewardText.text = data.reward;
+        ScoreText.text = data.score.ToString();
         isSelected = false;
         
         m_selectedImage.SetActive(false);

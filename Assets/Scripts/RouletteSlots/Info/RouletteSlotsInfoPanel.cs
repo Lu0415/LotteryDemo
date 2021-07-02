@@ -20,6 +20,11 @@ public class RouletteSlotsInfoPanel : MonoBehaviour
         
     }
 
+    public void InitAction(float score)
+    {
+        ScoreText.text = string.Format("SCORE: {0}", score);
+    }
+
     private void SetScoreValue(float score)
     {
         ScoreText.text = string.Format("SCORE: {0}", score);

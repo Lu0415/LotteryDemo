@@ -1,14 +1,16 @@
-﻿using UnityEngine;
+﻿using System;
+using System.Collections.Generic;
+using UnityEngine;
 
 namespace Assets.Script.Model.Bean
 {
 
-    public class SampleData
+    public class SampleCharData
     {
         public string reward;
         public float score;
 
-        public SampleData(string reward, float score)
+        public SampleCharData(string reward, float score)
         {
             this.reward = reward;
             this.score = score;
@@ -20,7 +22,7 @@ namespace Assets.Script.Model.Bean
     /// </summary>
     public class RouletteSlotsData
     {
-        public string[] SampleData;
+        public List<SampleCharData> SampleData;
 
         public Vector3[] PointArray;
 
@@ -28,7 +30,7 @@ namespace Assets.Script.Model.Bean
 
         public float ItemH;
 
-        public string[] TempSampleChar;
+        public List<SampleCharData> TempSampleChar;
     }
 
     /// <summary>
@@ -42,7 +44,7 @@ namespace Assets.Script.Model.Bean
 
         public float ItemH;
 
-        public string[] TempSampleChar;
+        public List<SampleCharData> TempSampleChar;
     }
 
     /// <summary>
@@ -57,4 +59,21 @@ namespace Assets.Script.Model.Bean
         public float Score;
     }
 
+    /// <summary>
+    /// 
+    /// </summary>
+    public class SampleCharDataSearch
+    {
+        string _reward;
+
+        public SampleCharDataSearch(string r)
+        {
+            _reward = r;
+        }
+
+        public bool StartsWith(SampleCharData d)
+        {
+            return d.reward.StartsWith(_reward, StringComparison.InvariantCultureIgnoreCase);
+        }
+    }
 }
